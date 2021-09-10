@@ -14,6 +14,12 @@ min_payload = spacex_df['Payload Mass (kg)'].min()
 # Create a dash application
 app = dash.Dash(__name__)
 
+uniquelaunchsites = spacex_df['Launch Site'].unique().tolist()
+lsites = []
+lsites.append({'label': 'All Sites', 'value': 'All Sites'})
+for site in uniquelaunchsites:
+    lsites.append({'label': site, 'value': site})
+
 # Create an app layout
 app.layout = html.Div(children=[html.H1('SpaceX Launch Records Dashboard',
                                         style={'textAlign': 'center', 'color': '#503D36',
@@ -21,7 +27,7 @@ app.layout = html.Div(children=[html.H1('SpaceX Launch Records Dashboard',
                                 # TASK 1: Add a dropdown list to enable Launch Site selection
                                 # The default select value is for ALL sites
                                 # dcc.Dropdown(id='site-dropdown',...)
-                                dcc.Dropdown(id='site_dropdown', options='Launch Site',
+                                dcc.Dropdown(id='site_dropdown', options=lsites,
                                              placeholder='Select a Launch Site here', searchable=True,
                                              value='All Sites'),
                                 html.Br(),
@@ -108,4 +114,3 @@ def update_scattergraph(site_dropdown, payload_slider):
 # Run the app
 if __name__ == '__main__':
     app.run_server()
-
